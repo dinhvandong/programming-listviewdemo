@@ -1,4 +1,5 @@
-﻿using ListView_Demo.Models;
+﻿using ListView_Demo.Data;
+using ListView_Demo.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,8 +16,10 @@ namespace ListView_Demo
     public partial class Form1 : Form
     {
 
-       static List<Student> students = new List<Student>();
-       static int index = -1;
+      // static List<Student> students = new List<Student>();
+        static List<Student> studentsSearch = new List<Student>();
+
+        static int index = -1;
        static Student studentUpdate = null;
 
         public Form1()
@@ -73,7 +76,7 @@ namespace ListView_Demo
 
             }*/
 
-            foreach (Student s in students)
+            foreach (Student s in StaticData.students)
             {
                 listViewStudent.Items.Add(
                new ListViewItem(new[] {
@@ -104,6 +107,8 @@ namespace ListView_Demo
             // this.Controls.Add(listViewStudent);
 
 
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -115,7 +120,7 @@ namespace ListView_Demo
         {
              index = listViewStudent.FocusedItem.Index;
 
-            studentUpdate  = students[index];
+            studentUpdate  = StaticData.students[index];
             /* Student s = students[index];*/
 
             tbx_StudentCode.Text = studentUpdate.StudentCode;
@@ -130,6 +135,50 @@ namespace ListView_Demo
 
         }
 
+
+        private List<Student> searchByKeyword(string keyword)
+        {
+
+            if(keyword == "")
+            {
+                return StaticData.students;
+            }
+          List<Student> studentsSearch = new List<Student>();
+
+            for(int i = 0;i< StaticData.students.Count; i++)
+            {
+
+                Student student = StaticData.students[i];
+
+                if (student.StudentName.Contains(keyword))
+                {
+                    studentsSearch.Add(student);
+                }
+            }
+
+         /*   foreach(Student student in students)
+            {
+                if (student.StudentName.Contains(keyword))
+                {
+                    studentsSearch.Add(student);
+                }
+
+            }*/
+            return studentsSearch;
+        }
+
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            // In this example, we will simply display the current text in a label
+           // this.label1.Text = ((TextBox)sender).Text;
+
+            string keyword = ((System.Windows.Forms.TextBox)sender).Text;
+
+            studentsSearch = searchByKeyword(keyword);
+            Display(studentsSearch);
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -138,6 +187,10 @@ namespace ListView_Demo
         private void button2_Click_1(object sender, EventArgs e)
         {
 
+            UserInputForm userInput = new UserInputForm();
+            userInput.ShowDialog();
+
+/*
             string studentCode = tbx_StudentCode.Text;
             string studentName = tbx_StudentName.Text;
             string address = tbx_Address.Text;
@@ -169,6 +222,8 @@ namespace ListView_Demo
                    s.Major }));
                 i++;
             }
+
+            MessageBox.Show("Insert student sucessful");*/
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -176,12 +231,12 @@ namespace ListView_Demo
 
             try
             {
-                students.RemoveAt(index);
+                StaticData.students.RemoveAt(index);
 
                 listViewStudent.Items.Clear();
                 int i = 0;
 
-                foreach (Student s in students)
+                foreach (Student s in StaticData.students)
                 {
                     listViewStudent.Items.Add(
                    new ListViewItem(new[] {
@@ -207,19 +262,12 @@ namespace ListView_Demo
            
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void Display(List<Student> displayList)
         {
-            //Student s = students[index];
-
-            students[index].StudentCode = tbx_StudentCode.Text;
-            students[index].StudentName = tbx_StudentName.Text;
-            students[index].Address = tbx_Address.Text;
-            students[index].Phone = txb_PhoneNumber.Text;
-
             listViewStudent.Items.Clear();
             int i = 0;
 
-            foreach (Student s in students)
+            foreach (Student s in displayList)
             {
                 listViewStudent.Items.Add(
                new ListViewItem(new[] {
@@ -236,6 +284,42 @@ namespace ListView_Demo
                 i++;
             }
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            //Student s = students[index];
+
+            StaticData.students[index].StudentCode = tbx_StudentCode.Text;
+            StaticData.students[index].StudentName = tbx_StudentName.Text;
+            StaticData.students[index].Address = tbx_Address.Text;
+            StaticData.students[index].Phone = txb_PhoneNumber.Text;
+
+            listViewStudent.Items.Clear();
+            int i = 0;
+
+            foreach (Student s in StaticData.students)
+            {
+                listViewStudent.Items.Add(
+               new ListViewItem(new[] {
+                   s.Index+"" + (i+1),
+                   s.StudentCode+"",
+                   s.StudentName+"",
+                   s.Address+"",
+                   s.Phone,s.GPA+"",
+                   s.Status+"",
+                   s.Gender+"",
+                   s.BirthDay+"",
+                   s.Class+"",
+                   s.Major }));
+                i++;
+            }
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Display(StaticData.students);
         }
     }
 }

@@ -20,3 +20,4 @@ C:\FPT\BTEC\SUMMER-2023\SEO6201\ListViewDemo\ListView-Demo\obj\Debug\ListView-De
 C:\FPT\BTEC\SUMMER-2023\SEO6201\ListViewDemo\ListView-Demo\obj\Debug\ListView-Demo.csproj.CoreCompileInputs.cache
 C:\FPT\BTEC\SUMMER-2023\SEO6201\ListViewDemo\ListView-Demo\obj\Debug\ListView-Demo.exe
 C:\FPT\BTEC\SUMMER-2023\SEO6201\ListViewDemo\ListView-Demo\obj\Debug\ListView-Demo.pdb
+C:\FPT\BTEC\SUMMER-2023\SEO6201\ListViewDemo\ListView-Demo\obj\Debug\ListView_Demo.UserInputForm.resources
